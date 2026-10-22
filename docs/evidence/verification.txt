@@ -1,0 +1,76 @@
+Python 3.11.9; Matplotlib backend Agg
+$ python -B tools/check_extraction.py
+{
+  "loading_unchanged_except_filename_parameter": true,
+  "preparation_statements_unchanged": true,
+  "cumulative_statements_unchanged": true,
+  "country_sum_unchanged": true,
+  "country_print_unchanged": true,
+  "plot_statements_unchanged": true
+}
+Exit: 0; expected: 0
+
+$ python -B -m unittest discover -v
+test_bad_comparison_inputs_report_controlled_errors (tests.test_comparison.ComparisonApplicationTests.test_bad_comparison_inputs_report_controlled_errors) ... ok
+test_comparison_uses_existing_loader_without_prompt_or_plot (tests.test_comparison.ComparisonApplicationTests.test_comparison_uses_existing_loader_without_prompt_or_plot) ... ok
+test_importing_analysis_and_entry_does_not_need_matplotlib_or_prompt (tests.test_comparison.ComparisonApplicationTests.test_importing_analysis_and_entry_does_not_need_matplotlib_or_prompt) ... ok
+test_year_options_need_comparison_and_nonnumeric_year_is_controlled (tests.test_comparison.ComparisonApplicationTests.test_year_options_need_comparison_and_nonnumeric_year_is_controlled) ... ok
+test_empty_period_tie_and_positive_tie (tests.test_comparison.ComparisonTests.test_empty_period_tie_and_positive_tie) ... ok
+test_existing_country_total_is_reused (tests.test_comparison.ComparisonTests.test_existing_country_total_is_reused) ... ok
+test_float_noise_does_not_break_tie_and_zero_duration_counts (tests.test_comparison.ComparisonTests.test_float_noise_does_not_break_tie_and_zero_duration_counts) ... ok
+test_invalid_year_inputs (tests.test_comparison.ComparisonTests.test_invalid_year_inputs) ... ok
+test_known_results_include_both_years_and_exclude_neighbours (tests.test_comparison.ComparisonTests.test_known_results_include_both_years_and_exclude_neighbours) ... ok
+test_no_matches_zero_total_unavailable_average (tests.test_comparison.ComparisonTests.test_no_matches_zero_total_unavailable_average) ... ok
+test_same_country_is_allowed (tests.test_comparison.ComparisonTests.test_same_country_is_allowed) ... ok
+test_single_year_second_country_wins (tests.test_comparison.ComparisonTests.test_single_year_second_country_wins) ... ok
+test_unknown_country_blank_and_empty_dataset (tests.test_comparison.ComparisonTests.test_unknown_country_blank_and_empty_dataset) ... ok
+test_all_original_points_prompt_text_labels_save_and_show (tests.test_inherited.InheritedApplicationTests.test_all_original_points_prompt_text_labels_save_and_show) ... ok
+test_empty_input (tests.test_inherited.InheritedCalculationsTests.test_empty_input) ... ok
+test_known_cumulative_and_country_results (tests.test_inherited.InheritedCalculationsTests.test_known_cumulative_and_country_results) ... ok
+test_no_new_validation_policy_was_inserted (tests.test_inherited.InheritedCalculationsTests.test_no_new_validation_policy_was_inserted) ... ok
+test_preparation_keeps_tuple_conversion_sort_and_skip_rules (tests.test_inherited.InheritedCalculationsTests.test_preparation_keeps_tuple_conversion_sort_and_skip_rules) ... ok
+
+----------------------------------------------------------------------
+Ran 18 tests in 1.178s
+
+OK
+Exit: 0; expected: 0
+
+$ python -B evacodev2.py
+Country: Total EVA duration for USA: 1257.13 hours
+C:\Users\darah\MyRepos\MastersBlock\SWA\activities\softwareraconteur\eva-week-2\eva_presentation.py:16: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  plt.show()
+Exit: 0; expected: 0
+
+$ python -B evacodev2.py --compare USA Russia --start-year 1965 --end-year 2013
+EVA comparison: 1965-2013 (inclusive)
+USA: 217 EVAs; total 1257.13 hours; average 5.79 hours
+Russia: 113 EVAs; total 527.90 hours; average 4.67 hours
+Greater total EVA duration: USA
+Scope: dated dataset entries with durations, including zero-duration entries.
+Exit: 0; expected: 0
+
+$ python -B evacodev2.py --compare USA Russia --start-year 1900 --end-year 1901
+EVA comparison: 1900-1901 (inclusive)
+USA: 0 EVAs; total 0.00 hours; average unavailable
+Russia: 0 EVAs; total 0.00 hours; average unavailable
+Tie: equal total EVA duration
+Scope: dated dataset entries with durations, including zero-duration entries.
+Exit: 0; expected: 0
+
+$ python -B evacodev2.py --compare Mars USA --start-year 2000 --end-year 2001
+Error: Unknown country: 'Mars'. Available: Russia, USA
+Exit: 2; expected: 2
+
+$ python -B evacodev2.py --compare USA Russia --start-year 2010 --end-year 2000
+Error: Use integer years with 1 <= start year <= end year <= 9999
+Exit: 2; expected: 2
+
+$ python -B evacodev2.py --compare USA Russia --start-year bad --end-year 2000
+usage: evacodev2.py [-h] [--compare COUNTRY_A COUNTRY_B]
+                    [--start-year START_YEAR] [--end-year END_YEAR]
+evacodev2.py: error: argument --start-year: invalid int value: 'bad'
+Exit: 2; expected: 2
+
+Original output is PNG: True
+Verification failures: 0

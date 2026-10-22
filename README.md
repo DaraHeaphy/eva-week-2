@@ -41,3 +41,32 @@ To re-execute the original revision and capture its baseline, use
 - [ADR-001](docs/ADR-001.md)
 
 Implementation and documentation were prepared with Codex assistance.
+
+## Required country comparison
+
+```powershell
+python evacodev2.py --compare USA Russia --start-year 1965 --end-year 2013
+python evacodev2.py --compare USA Russia --start-year 1900 --end-year 1901
+python -B tools/verify.py
+```
+
+Years include both endpoints. The comparison reports event-entry count, total/mean
+hours and winner/tie. Known countries with no matches produce zero count/total and
+unavailable average. Unknown countries, reversed/missing/out-of-range years, nonnumeric
+years and year flags without comparison give an explanatory error and exit 2.
+Country input is case insensitive and comparison trims outer spaces. Available labels
+come from all prepared records, before year filtering. Comparison does not prompt or
+open a graph; no-argument invocation keeps the original workflow unchanged.
+
+45 of 375 source rows lack date or duration and are skipped by the original policy.
+Dated zero-duration entries count. Results describe retained dataset entries, not
+necessarily completed EVAs or complete historical activity. Source data and old
+validation behaviour are unchanged; stronger validation would be separate work.
+
+- [ADR-002](docs/ADR-002.md): comparison decisions and alternatives.
+- [Evaluation and requirement map](docs/EVALUATION.md).
+- [Recorded test/extraction/smoke evidence](docs/evidence/verification.txt).
+
+History separates assessment/plan, inherited-code extraction and new functionality.
+Use `git log --oneline` to locate each dedicated commit.
+Personal interview notes and learning exercises remain local and are excluded from Git.

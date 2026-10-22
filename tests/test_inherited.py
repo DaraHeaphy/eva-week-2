@@ -56,7 +56,7 @@ class InheritedApplicationTests(unittest.TestCase):
         with patch("builtins.input", return_value="  USA  ") as prompt, \
              patch.object(plt, "savefig") as save, patch.object(plt, "show") as show, \
              contextlib.redirect_stdout(io.StringIO()) as output:
-            evacodev2.main()
+            evacodev2.main([])
         axes = plt.gca()
         line = axes.lines[0]
         self.assertEqual([date.isoformat() for date in line.get_xdata()], baseline["dates"])

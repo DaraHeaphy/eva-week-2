@@ -35,3 +35,13 @@ records as returned by prepare_records. Dates/durations/countries with malformed
 values retain inherited failure behaviour. The new comparison will validate its own
 user input without silently changing the data preparation policy. Tuple interfaces are
 simple but positional; a future representation migration must be justified separately.
+
+## Added comparison interface
+
+`compare_countries(records, country_a, country_b, start_year, end_year)` returns a dict
+with first, second, start_year, end_year and winner keys. Each summary has country,
+count, total_hours and average_hours. None means unavailable average or a tie winner,
+respectively. Invalid year/country input raises ValueError. Prepared tuple records are
+unchanged. The existing coordinator catches new comparison errors and delegates to
+`display_comparison(result)` in presentation. The existing country total is reused;
+no new import dependencies between responsibility modules are needed.

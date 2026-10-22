@@ -14,3 +14,15 @@ def plot_cumulative_duration(dates, cumulative_hours):
     plt.tight_layout()
     plt.savefig("cumulative_duration.png")
     plt.show()
+
+
+def display_comparison(result):
+    print(f"EVA comparison: {result['start_year']}-{result['end_year']} (inclusive)")
+    for summary in (result["first"], result["second"]):
+        average = ("unavailable" if summary["average_hours"] is None
+                   else f"{summary['average_hours']:.2f} hours")
+        print(f"{summary['country']}: {summary['count']} EVAs; "
+              f"total {summary['total_hours']:.2f} hours; average {average}")
+    print("Tie: equal total EVA duration" if result["winner"] is None
+          else f"Greater total EVA duration: {result['winner']}")
+    print("Scope: dated dataset entries with durations, including zero-duration entries.")
