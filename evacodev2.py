@@ -1,43 +1,21 @@
-import json
-from datetime import datetime
-import matplotlib.pyplot as plt
+"""Inherited EVA application: coordinate the extracted original responsibilities."""
+from eva_loading import load_eva_data
+from eva_preparation import prepare_records
+from eva_analysis import cumulative_duration, total_duration_for_country
+from eva_presentation import display_country_total, plot_cumulative_duration
 
-with open("eva-data.json", "r", encoding="utf-8") as file:
-    eva_data = json.load(file)
 
-records = []
+def main():
+    eva_data = load_eva_data()
+    records = prepare_records(eva_data)
+    dates, cumulative_hours = cumulative_duration(records)
 
-for eva in eva_data:
-    date_text = eva.get("date")
-    duration_text = eva.get("duration")
+    selected_country = input("Country: ").strip()
+    country_hours = total_duration_for_country(records, selected_country)
+    display_country_total(selected_country, country_hours)
 
-    if not date_text or not duration_text:
-        continue
+    plot_cumulative_duration(dates, cumulative_hours)
 
-    date = datetime.fromisoformat(date_text)
-    hours, minutes = map(int, duration_text.split(":"))
-    duration_hours = hours + minutes / 60
 
-    records.append((date, duration_hours, eva.get("country")))
-
-records.sort(key=lambda record: record[0])
-
-dates = []
-cumulative_hours = []
-total_hours = 0
-
-for date, duration_hours, country in records:
-    total_hours += duration_hours
-    dates.append(date)
-    cumulative_hours.append(total_hours)
-
-selected_country = input("Country: ").strip()
-country_hours = sum(hours for _, hours, country in records if country.lower() == selected_country.lower())
-print(f"Total EVA duration for {selected_country}: {country_hours:.2f} hours")
-
-plt.plot(dates, cumulative_hours)
-plt.xlabel("Year")
-plt.ylabel("Cumulative EVA duration (hours)")
-plt.tight_layout()
-plt.savefig("cumulative_duration.png")
-plt.show()
+if __name__ == "__main__":
+    main()
