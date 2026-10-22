@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.venv/
+tmp/
+cumulative_duration.png
+# Personal study materials stay local
+/INTERVIEW-CHEAT-SHEET.md
+/docs/LEARNING-WALKTHROUGH.md
